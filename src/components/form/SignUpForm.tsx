@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 
-const LoginFormSchema = z
+const SignUpFormSchema = z
 	.object({
 		username: z
 			.string({
@@ -44,14 +44,14 @@ const LoginFormSchema = z
 	});
 
 export default function SignUpForm() {
-	const form = useForm<z.infer<typeof LoginFormSchema>>({
-		resolver: zodResolver(LoginFormSchema),
+	const form = useForm<z.infer<typeof SignUpFormSchema>>({
+		resolver: zodResolver(SignUpFormSchema),
 		defaultValues: {
 			email: '',
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof LoginFormSchema>) {
+	function onSubmit(data: z.infer<typeof SignUpFormSchema>) {
 		console.log('submitted');
 	}
 	return (
