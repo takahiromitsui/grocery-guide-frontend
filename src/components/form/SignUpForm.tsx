@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { create } from 'domain';
+import { signUp } from '@/api/auth';
 
 const SignUpFormSchema = z
 	.object({
@@ -50,9 +53,13 @@ export default function SignUpForm() {
 			email: '',
 		},
 	});
+	const signUpMutation = useMutation({
+		mutationFn: signUp,
+	});
 
 	function onSubmit(data: z.infer<typeof SignUpFormSchema>) {
-		console.log('submitted');
+		const { confirm, ...rest } = data;
+		signUpMutation.mutate(rest);
 	}
 	return (
 		<Form {...form}>

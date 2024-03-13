@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const envVariables = z.object({
-	API_URL: z.string(),
+	NEXT_PUBLIC_API_URL: z.string(),
 });
 
 envVariables.parse(process.env);
