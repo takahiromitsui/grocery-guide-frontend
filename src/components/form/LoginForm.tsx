@@ -14,12 +14,19 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 const LoginFormSchema = z.object({
-	email: z.string().email({ message: 'Invalid email address' }),
-	password: z.string({
-		required_error: 'Password is required',
-	}),
+	email: z
+		.string({
+			required_error: 'Email is required',
+		})
+		.email({ message: 'Invalid email address' }),
+	password: z
+		.string({
+			required_error: 'Password is required',
+		})
+		.min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
 export default function LoginForm() {
@@ -44,7 +51,10 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input placeholder='example@mail.com' {...field} />
+									<Input
+										placeholder='example@mail.com'
+										{...field}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -57,7 +67,11 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input placeholder='Enter your password' {...field} />
+									<Input
+										type='password'
+										placeholder='Enter your password'
+										{...field}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -67,6 +81,20 @@ export default function LoginForm() {
 				<Button className='w-full mt-4' type='submit'>
 					Login
 				</Button>
+				<div
+					className='mx-auto
+        my-4 flex w-full items-center justify-evenly
+        before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400
+        '
+				>
+					or
+				</div>
+				<p>
+					If you don&apos;t have an account, please&nbsp;
+					<Link className='text-blue-500 hover:underline' href='/sign-up'>
+						Sign up
+					</Link>
+				</p>
 			</form>
 		</Form>
 	);
