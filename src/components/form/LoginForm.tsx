@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -17,8 +16,9 @@ import {
 import { Input } from '@/components/ui/input';
 
 const LoginFormSchema = z.object({
-	username: z.string().min(2, {
-		message: 'Username must be at least 2 characters.',
+	email: z.string().email({ message: 'Invalid email address' }),
+	password: z.string({
+		required_error: 'Password is required',
 	}),
 });
 
@@ -26,7 +26,7 @@ export default function LoginForm() {
 	const form = useForm<z.infer<typeof LoginFormSchema>>({
 		resolver: zodResolver(LoginFormSchema),
 		defaultValues: {
-			username: '',
+			email: '',
 		},
 	});
 
@@ -35,24 +35,38 @@ export default function LoginForm() {
 	}
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='w-2/3 space-y-6'>
-				<FormField
-					control={form.control}
-					name='username'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Username</FormLabel>
-							<FormControl>
-								<Input placeholder='shadcn' {...field} />
-							</FormControl>
-							<FormDescription>
-								This is your public display name.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type='submit'>Submit</Button>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
+				<div className='space-y-2'>
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input placeholder='example@mail.com' {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='password'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<Input placeholder='Enter your password' {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
+				<Button className='w-full mt-4' type='submit'>
+					Login
+				</Button>
 			</form>
 		</Form>
 	);
