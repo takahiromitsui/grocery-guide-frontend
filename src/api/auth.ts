@@ -1,7 +1,11 @@
-import axios from 'axios';
-import { BASE_URL } from '@/api/config';
+import axios from '@/api/config';
 
 export function signUp(data: any) {
-	const url = BASE_URL + '/users';
+	const url = '/users';
+	return axios.post(url, data).then(res => res);
+}
+
+export function login(data: any) {
+	const url = '/login';
 	return axios.post(url, data).then(res => res);
 }

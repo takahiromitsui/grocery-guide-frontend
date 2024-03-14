@@ -19,7 +19,6 @@ import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import { signUp } from '@/api/auth';
 import { useRouter } from 'next/navigation';
-import { error } from 'console';
 
 const SignUpFormSchema = z
 	.object({

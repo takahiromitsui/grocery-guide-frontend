@@ -15,6 +15,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@/api/auth';
 
 const LoginFormSchema = z.object({
 	email: z
@@ -37,8 +40,19 @@ export default function LoginForm() {
 		},
 	});
 
+	// const router = useRouter()
+	const loginMutation = useMutation({
+		mutationFn: login,
+		onError:(error) => {
+			console.log(error)
+		},
+		onSuccess: () => {
+			console.log("success")
+		}
+	});
+
 	function onSubmit(data: z.infer<typeof LoginFormSchema>) {
-		console.log('submitted');
+		loginMutation.mutate(data);
 	}
 	return (
 		<Form {...form}>
