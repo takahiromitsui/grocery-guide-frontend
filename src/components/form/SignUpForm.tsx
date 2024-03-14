@@ -17,8 +17,9 @@ import {
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { create } from 'domain';
 import { signUp } from '@/api/auth';
+import { useRouter } from 'next/navigation';
+import { error } from 'console';
 
 const SignUpFormSchema = z
 	.object({
@@ -53,13 +54,21 @@ export default function SignUpForm() {
 			email: '',
 		},
 	});
+	const router = useRouter()
 	const signUpMutation = useMutation({
 		mutationFn: signUp,
+		onError:(error) => {
+			console.log(error)
+		},
+		onSuccess: () => {
+			console.log("success")
+			router.push('/login')
+		}
 	});
 
 	function onSubmit(data: z.infer<typeof SignUpFormSchema>) {
 		const { confirm, ...rest } = data;
-		signUpMutation.mutate(rest);
+		signUpMutation.mutate(rest)
 	}
 	return (
 		<Form {...form}>
