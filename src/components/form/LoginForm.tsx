@@ -15,9 +15,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '@/api/auth';
+import { useRouter } from 'next/navigation';
 
 const LoginFormSchema = z.object({
 	email: z
@@ -33,6 +33,7 @@ const LoginFormSchema = z.object({
 });
 
 export default function LoginForm() {
+	const router = useRouter();
 	const form = useForm<z.infer<typeof LoginFormSchema>>({
 		resolver: zodResolver(LoginFormSchema),
 		defaultValues: {
@@ -43,12 +44,12 @@ export default function LoginForm() {
 	// const router = useRouter()
 	const loginMutation = useMutation({
 		mutationFn: login,
-		onError:(error) => {
-			console.log(error)
+		onError: error => {
+			console.log(error);
 		},
 		onSuccess: () => {
-			console.log("success")
-		}
+			router.push('/users');
+		},
 	});
 
 	function onSubmit(data: z.infer<typeof LoginFormSchema>) {
@@ -65,10 +66,7 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input
-										placeholder='example@mail.com'
-										{...field}
-									/>
+									<Input placeholder='example@mail.com' {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
