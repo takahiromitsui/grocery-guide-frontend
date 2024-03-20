@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Provider from '@/lib/Provider';
+import { cookies } from 'next/headers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,10 +20,17 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				<Navbar />
-				<main className='h-screen flex flex-col justify-center items-center'>
-					<Provider>{children}</Provider>
-				</main>
+				<Provider>
+					<Navbar 
+						deleteSession = {async() => {
+							'use server';
+							cookies().delete('connect.sid');
+						}}
+					/>
+					<main className='h-screen flex flex-col justify-center items-center'>
+						{children}
+					</main>
+				</Provider>
 			</body>
 		</html>
 	);
