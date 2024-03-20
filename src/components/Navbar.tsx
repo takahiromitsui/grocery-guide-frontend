@@ -6,10 +6,11 @@ import { Wheat } from 'lucide-react';
 import { logout } from '@/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 type Props = {
 	deleteSession: () => void;
-}
+};
 
 export default function Navbar({ deleteSession }: Props) {
 	const logoutMutation = useMutation({
@@ -22,6 +23,7 @@ export default function Navbar({ deleteSession }: Props) {
 		},
 	});
 	const router = useRouter();
+	const isUsersPage = usePathname().startsWith('/users');
 	return (
 		<nav className='bg-zinc-100 py-2 border-b border-s-zinc-200 fixed w-full z-10 top-0'>
 			<div
@@ -32,17 +34,20 @@ export default function Navbar({ deleteSession }: Props) {
 				<Link href='/'>
 					<Wheat />
 				</Link>
-				<Link className={buttonVariants()} href='/login'>
-					Login
-				</Link>
-				<Button
-					onClick={() => {
-						logoutMutation.mutate();
-						deleteSession();
-					}}
-				>
-					Logout
-				</Button>
+				{isUsersPage ? (
+					<Button
+						onClick={() => {
+							logoutMutation.mutate();
+							deleteSession();
+						}}
+					>
+						Logout
+					</Button>
+				) : (
+					<Link className={buttonVariants()} href='/login'>
+						Login
+					</Link>
+				)}
 			</div>
 		</nav>
 	);
